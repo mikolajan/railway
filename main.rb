@@ -13,7 +13,9 @@ loop do
 
   action, params = console_interface.process(user_input)
 
-  puts "ОТЛАДОЧНЫЙ ВЫВОД action: #{action}, params: #{params}"
+puts
+puts "ОТЛАДОЧНЫЙ ВЫВОД action: #{action}, params: #{params}"
+puts
 
   if params.any?
     railway.make_action!(action, params)

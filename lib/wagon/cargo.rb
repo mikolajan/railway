@@ -6,5 +6,9 @@ module Wagon
       @type = TYPES[0]
       super(number)
     end
+
+    def to_s
+      "#{@number} (грузовой)"
+    end
   end
 end

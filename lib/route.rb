@@ -1,5 +1,3 @@
-require_relative 'modules/instanceable'
-
 class Route
   attr_reader :number, :start_station, :end_station
 
@@ -8,11 +6,6 @@ class Route
     @start_station = start_station
     @end_station = end_station
     @intermediate_stations = []
-    register_instance
-  end
-
-  def find(number)
-    instances.find { |item| item.number == number}
   end
 
   def add_station(station)
@@ -20,15 +13,19 @@ class Route
   end
 
   def delete_station(station)
+    raise 'Нельзя удалить начальную станцию' if station == @start_station
+    raise 'Нельзя удалить конечную станцию'  if station == @end_station
+    raise 'Станция в маршруте отсутсвует' unless @intermediate_stations.include?(station)
+
     @intermediate_stations.delete(station)
   end
 
-  def get_route
+  def route
     [@start_station, *@intermediate_stations, @end_station]
   end
 
   def to_s
-    "Информация о маршруте '#{@number}':\n" \
-    "Текущий маршрут следования: #{get_route.map(&:name).join('<--->')}."
+    "Маршрут '#{@number}':\n" \
+    "Текущий маршрут следования: #{route.map(&:name).join('<--->')}"
   end
 end
