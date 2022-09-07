@@ -1,24 +1,18 @@
-# Класс Train (Поезд):
-# Имеет номер (произвольная строка) и тип (грузовой, пассажирский) и количество вагонов, эти данные указываются при создании экземпляра класса
-# Может набирать скорость
-# Может возвращать текущую скорость
-# Может тормозить (сбрасывать скорость до нуля)
-# Может возвращать количество вагонов
-# Может прицеплять/отцеплять вагоны (по одному вагону за операцию, метод просто увеличивает или уменьшает количество вагонов). Прицепка/отцепка вагонов может осуществляться только если поезд не движется.
-# Может принимать маршрут следования (объект класса Route). При назначении маршрута поезду, поезд автоматически помещается на первую станцию в маршруте.
-# Может перемещаться между станциями, указанными в маршруте. Перемещение возможно вперед и назад, но только на 1 станцию за раз.
-# Возвращать предыдущую станцию, текущую, следующую, на основе маршрута
+require_relative '../modules/instanceable'
+require_relative '../modules/train_wagon_extendable'
 
 module Train
   class Base
-    attr_reader :speed, :wagons_counter, :current_station, :type, :number
+    include Instanceable
+    include TrainWagonExtendable
 
-    TYPES = %i(cargo passenger)
+    attr_reader :speed, :wagons_counter, :current_station
 
     def initialize(number)
       @number = number
       @wagons = []
       @speed = 0
+      register_instance
     end
 
     def stop
@@ -66,6 +60,11 @@ module Train
       result += ",\n  "
       result += @wagons.any? ? "Вагоны: #{@wagons.map { |w| "'#{w.number}'" }.join(', ')}." : 'Вагонов нет.'
     end
+
+
+    # def find
+
+    # end
 
     private
 
