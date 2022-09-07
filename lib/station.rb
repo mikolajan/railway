@@ -6,6 +6,8 @@
 # Может возвращать список поездов на станции по типу (см. ниже): кол-во грузовых, пассажирских
 
 class Station
+  attr_reader :name
+
   def initialize(name)
     @name = name
     @trains = []
@@ -25,5 +27,14 @@ class Station
 
   def trains_count_by_type(type)
     @trains.count { |train| train.type == type }
+  end
+
+  def to_s
+    result = "Информация о станции '#{name}':\n"
+    result += if @trains.size > 0
+      "На станции #{@trains.size} поездов: #{@trains.map { |train| "'#{train.number}'"}.join(', ')}"
+    else
+      "На станции нет поездов."
+    end
   end
 end

@@ -6,9 +6,10 @@
 # Может выводить список всех станций по-порядку от начальной до конечной
 
 class Route
-  attr_reader :start_station, :end_station
+  attr_reader :number, :start_station, :end_station
 
-  def initialize(start_station, end_station)
+  def initialize(number, start_station, end_station)
+    @number = number
     @start_station = start_station
     @end_station = end_station
     @intermediate_stations = []
@@ -27,6 +28,7 @@ class Route
   end
 
   def to_s
-    "Текущий маршрут следования: #{get_route.join(', ')}."
+    "Информация о маршруте '#{@number}':\n" \
+    "Текущий маршрут следования: #{get_route.map(&:name).join('<--->')}."
   end
 end
