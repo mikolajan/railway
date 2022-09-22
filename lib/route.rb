@@ -1,5 +1,18 @@
+require_relative 'metaprogramming/validation'
+require_relative 'station'
+
 class Route
-  attr_reader :number, :start_station, :end_station
+  include Validation
+
+  attr_reader :errors, :number, :start_station, :end_station
+
+  validate :number, :presence
+  validate :number, :format, /\A[A-Z]{4,}-\d{2,}\z/
+  validate :start_station, :presence
+  validate :start_station, :type, ::Station
+  validate :end_station, :presence
+  validate :end_station, :type, ::Station
+  validate :start_station, :not_equal, :end_station
 
   def initialize(number, start_station, end_station)
     @number = number

@@ -2,6 +2,7 @@ require_relative 'lib/console_interface'
 require_relative 'lib/railway'
 
 railway = Railway.new
+railway.create_test_data
 console_interface = ConsoleInterface.new(railway)
 
 loop do
@@ -12,10 +13,6 @@ loop do
   break if user_input == '0'
 
   action, params = console_interface.process(user_input)
-
-puts
-puts "ОТЛАДОЧНЫЙ ВЫВОД action: #{action}, params: #{params}"
-puts
 
   if params.any?
     railway.make_action!(action, params)

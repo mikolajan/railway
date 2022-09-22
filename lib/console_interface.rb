@@ -14,6 +14,12 @@ class ConsoleInterface
     when 'Добавить станцию маршруту', 'Удалить станцию из маршрута'
       params[:route_number] = get_route_number
       params[:station_name] = get_station_name
+    when 'Загрузить грузовой вагон'
+      params[:wagon_number] = get_wagon_number
+      params[:volume] = get_user_input('Введите объем: ').to_i
+    when 'Занять место в пассажирском вагоне'
+      params[:wagon_number] = get_wagon_number
+      params[:place_number] = get_user_input('Введите номер места: ').to_i
     when 'Назначить маршрут поезду'
       params[:train_number] = get_train_number
       params[:route_number] = get_route_number
@@ -25,14 +31,18 @@ class ConsoleInterface
       show_trains_list
     when 'Посмотреть список станций'
       show_stations_list
-    when 'Создать грузовой вагон', 'Создать пассажирский вагон'
+    when 'Создать грузовой вагон'
       params[:wagon_number] = get_wagon_number
+      params[:total_volume] = get_user_input('Введите общий объем в куб.м: ').to_i
+    when 'Создать пассажирский вагон'
+      params[:wagon_number] = get_wagon_number
+      params[:places_count] = get_user_input('Введите число мест в вагоне: ').to_i
     when 'Создать станцию'
       params[:station_name] = get_station_name
     when 'Создать маршрут'
       params[:route_number] = get_route_number
-      params[:start_station] = get_user_input("Введите начальную станцию маршрута: ").capitalize
-      params[:end_station] = get_user_input("Введите конечную станцию маршрута: ").capitalize
+      params[:start_station] = get_user_input('Введите начальную станцию маршрута: ').capitalize
+      params[:end_station] = get_user_input('Введите конечную станцию маршрута: ').capitalize
     when 'Создать грузовой поезд', 'Создать пассажирский поезд'
       params[:train_number] = get_train_number
     when 'Прицепить вагон к поезду', 'Отцепить вагон от поезда'
@@ -70,25 +80,26 @@ class ConsoleInterface
   end
 
   def get_route_number
-    get_user_input("Введите номер маршрута: ").upcase
+    get_user_input('Введите номер маршрута: ').upcase
   end
 
   def get_train_number
-    get_user_input("Введите номер поезда: ").upcase
+    get_user_input('Введите номер поезда: ').upcase
   end
 
   def get_wagon_number
-    get_user_input("Введите номер вагона: ").upcase
+    get_user_input('Введите номер вагона: ').upcase
   end
 
   def get_station_name
-    get_user_input("Введите название станции: ").capitalize
+    get_user_input('Введите название станции: ').capitalize
   end
 
   ######### SHOW INFO #########
 
   def show_info(text)
     return if text.to_s.empty?
+
     puts "\n-----------\n#{text}.\n-----------\n "
   end
 
@@ -124,7 +135,7 @@ class ConsoleInterface
     @actions = ''
     index = 1
     Railway::ACTIONS.each do |title, subtitles|
-      @actions +=  "==== #{title} ====\n"
+      @actions += "==== #{title} ====\n"
       subtitles.each do |subtitle|
         @actions += "  #{index} #{subtitle}.\n"
         index += 1
@@ -140,13 +151,14 @@ class ConsoleInterface
 
   def subtitles
     return @subtitles if @subtitles
+
     @subtitles = Railway::ACTIONS.values.flatten
   end
 
   ######### SYSTEM #########
 
   def console_clear
-    system "clear" or system "cls"
+    system 'clear' or system 'cls'
     sleep 0.25
   end
 end

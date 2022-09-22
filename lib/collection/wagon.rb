@@ -1,16 +1,15 @@
 require_relative 'base'
-require_relative '../validator/wagon'
 require_relative '../wagon/cargo'
 require_relative '../wagon/passenger'
 
 module Collection
   class Wagon < Base
-    def create_cargo_wagon(number)
-      create_wagon(::Wagon::Cargo, number)
+    def create_cargo_wagon(*params)
+      create_wagon(::Wagon::Cargo, *params)
     end
 
-    def create_passenger_wagon(number)
-      create_wagon(::Wagon::Passenger, number)
+    def create_passenger_wagon(*params)
+      create_wagon(::Wagon::Passenger, *params)
     end
 
     def find(number)
@@ -19,13 +18,10 @@ module Collection
 
     private
 
-    def create_wagon(resource, number)
+    def create_wagon(resource, number, num)
       return 'Вагон с таким номером уже существует' if find(number)
-      create_resource(resource, 'Вагон успешно создан', number)
-    end
 
-    def validator_class
-      Validator::Wagon
+      create_resource(resource, 'Вагон успешно создан', number, num)
     end
   end
 end

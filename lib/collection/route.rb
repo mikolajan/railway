@@ -1,6 +1,5 @@
 require_relative 'base'
 require_relative '../route'
-require_relative '../validator/route'
 
 module Collection
   class Route < Base
@@ -10,12 +9,6 @@ module Collection
 
     def find(number)
       find_by_number(number)
-    end
-
-    private
-
-    def validator_class
-      Validator::Route
     end
   end
 end

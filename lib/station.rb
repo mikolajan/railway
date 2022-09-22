@@ -1,5 +1,12 @@
+require_relative 'metaprogramming/validation'
+
 class Station
-  attr_reader :name
+  include Validation
+
+  attr_reader :errors, :name
+
+  validate :name, :presence
+  validate :name, :format, /\A[[:upper:]][[:lower:]][-\w]+\z/
 
   def initialize(name)
     @name = name
@@ -16,10 +23,12 @@ class Station
 
   def to_s
     result = "Cтанция '#{name}':\n"
-    result += if @trains.size > 0
-      "На станции #{@trains.size} поездов: #{@trains.map { |train| "'#{train.number}'"}.join(', ')}"
-    else
-      "На станции нет поездов"
-    end
+    result +=
+      if @trains.size > 0
+        'Поезда на станции: ' +
+          @trains.map { |train| "номер '#{train.number}', вагонов: #{train.wagons_count}" }.join('; ')
+      else
+        'На станции нет поездов'
+      end
   end
 end
